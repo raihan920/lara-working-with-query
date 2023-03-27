@@ -19,8 +19,21 @@ Route::get('/', function () {
 });
 
 Route::get('/query', function(){
-    $results = DB::table('customers')->get();
+    // $results = DB::table('customers')->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+
+
+    $results = DB::table('products')
+    ->join('productlines', 'products.productLine', '=', 'productlines.productLine')
+    ->select('products.*', 'productlines.textDescription')
+    ->get();
     echo "<pre>";
     print_r($results);
     echo "</pre>";
+
+
+
 });
