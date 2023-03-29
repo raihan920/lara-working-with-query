@@ -43,7 +43,8 @@ Route::get('/query', function(){
 
     $results = DB::table('orders')
                 ->join('orderdetails', 'orders.orderNumber', '=', 'orderdetails.orderNumber')
-                ->select('orders.orderNumber', 'orders.status', DB::raw('SUM(quantityOrdered*priceEach) as total'))
+                ->select('orders.orderNumber', 'orders.status', DB::raw('SUM(orderdetails.quantityOrdered * orderdetails.priceEach) as total'))
+                ->groupBy('orders.orderNumber','orders.status')
                 ->get();
     echo "<pre>";
     print_r($results);
