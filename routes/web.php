@@ -41,15 +41,66 @@ Route::get('/query', function(){
     // print_r($results);
     // echo "</pre>";
 
-    $results = DB::table('orders')
-                ->join('orderdetails', 'orders.orderNumber', '=', 'orderdetails.orderNumber')
-                ->select('orders.orderNumber', 'orders.status', DB::raw('SUM(orderdetails.quantityOrdered * orderdetails.priceEach) as total'))
-                ->groupBy('orders.orderNumber','orders.status')
+    // $results = DB::table('orders')
+    //             ->join('orderdetails', 'orders.orderNumber', '=', 'orderdetails.orderNumber')
+    //             ->select('orders.orderNumber', 'orders.status', DB::raw('SUM(orderdetails.quantityOrdered * orderdetails.priceEach) as total'))
+    //             ->groupBy('orders.orderNumber','orders.status')
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    // $results = DB::table('orders')
+    //             ->select('orders.orderNumber', 'customers.customerName', 'orders.orderDate', 'orderdetails.orderLineNumber', 'products.productName', 'orderdetails.quantityOrdered', 'orderdetails.priceEach')
+    //             ->join('orderdetails', 'orders.orderNumber', '=', 'orderdetails.orderNumber')
+    //             ->join('products', 'orderdetails.productCode', '=', 'products.productCode')
+    //             ->join('customers', 'orders.customerNumber', '=', 'customers.customerNumber')
+    //             ->orderBy('orders.orderNumber')
+    //             ->orderBy('orderdetails.orderLineNumber')
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    // $results = DB::table('products as p')
+    //             ->select('o.orderNumber', 'p.productName', 'p.MSRP', 'o.priceEach')
+    //             ->join('orderdetails as o', function($join){
+    //                 $join->on('p.productCode', '=', 'o.productCode')
+    //                     ->whereRaw('p.MSRP > o.priceEach');
+    //             })
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    // left join
+    // $results = DB::table('customers as c')
+    //             ->select('c.customerNumber', 'c.customerName', 'o.orderNumber', 'o.status')
+    //             ->leftJoin('orders as o', 'c.customerNumber', '=', 'o.customerNumber')
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    // right join
+    //jibone order koreni emon customer
+    // $results = DB::table('customers as c')
+    //             ->select('c.customerName')
+    //             ->rightJoin('orders as o', 'c.customerNumber', '<>', 'o.customerNumber')
+    //             ->distinct('c.customerName')
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    //left join
+    //jara jibone order deyni
+    $results = DB::table('customers as c')
+                ->select('c.customerName')
+                ->leftJoin('orders as o', 'c.customerNumber', '=', 'o.customerNumber')
+                ->whereNull('o.customerNumber')
                 ->get();
     echo "<pre>";
     print_r($results);
     echo "</pre>";
-
-
-
 });
