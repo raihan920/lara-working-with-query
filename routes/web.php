@@ -106,12 +106,25 @@ Route::get('/query', function(){
 
     //self join
     //m for manager e for employee
-    $results = DB::table('employees as m')
-        ->join('employees as e', 'm.employeeNumber', '=', 'e.reportsTo')
-        ->selectRaw("e.employeeNumber as 'EmployeeID', CONCAT(e.firstName,' ',e.lastName) as 'EmployeeName', m.employeeNumber as 'BossID', CONCAT(m.firstName,' ',m.lastName) as 'BossName'")
-        ->get();
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
+    // $results = DB::table('employees as m')
+    //                 ->join('employees as e', 'm.employeeNumber', '=', 'e.reportsTo')
+    //                 ->selectRaw("e.employeeNumber as 'EmployeeID', CONCAT(e.firstName,' ',e.lastName) as 'EmployeeName', m.employeeNumber as 'BossID', CONCAT(m.firstName,' ',m.lastName) as 'BossName'")
+    //                 ->get();
+    //                 echo "<pre>";
+    //                 print_r($results);
+    //                 echo "</pre>";
+
+    //another example of self join
+    //same city different customers. customers who live in the same city
+    $results = DB::table('customers as c1')
+                    ->join('customers as c2', function($join){
+                        $join->on('c1.city', '=', 'c2.city');
+                        $join->on('c1.customerName', '!=', 'c2.customerName');
+                    })
+                    ->select('c1.customerName','c1.city')
+                    ->get();
+                    echo "<pre>";
+                    print_r($results);
+                    echo "</pre>";
 });
 
