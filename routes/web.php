@@ -95,12 +95,23 @@ Route::get('/query', function(){
 
     //left join
     //jara jibone order deyni
-    $results = DB::table('customers as c')
-                ->select('c.customerName')
-                ->leftJoin('orders as o', 'c.customerNumber', '=', 'o.customerNumber')
-                ->whereNull('o.customerNumber')
-                ->get();
-    echo "<pre>";
-    print_r($results);
-    echo "</pre>";
+    // $results = DB::table('customers as c')
+    //             ->select('c.customerName')
+    //             ->leftJoin('orders as o', 'c.customerNumber', '=', 'o.customerNumber')
+    //             ->whereNull('o.customerNumber')
+    //             ->get();
+    // echo "<pre>";
+    // print_r($results);
+    // echo "</pre>";
+
+    //self join
+    //m for manager e for employee
+    $results = DB::table('employees as m')
+        ->join('employees as e', 'm.employeeNumber', '=', 'e.reportsTo')
+        ->selectRaw("e.employeeNumber as 'EmployeeID', CONCAT(e.firstName,' ',e.lastName) as 'EmployeeName', m.employeeNumber as 'BossID', CONCAT(m.firstName,' ',m.lastName) as 'BossName'")
+        ->get();
+        echo "<pre>";
+        print_r($results);
+        echo "</pre>";
 });
+
